@@ -20,6 +20,10 @@ public abstract class Header {
         return arrayList;
     }
 
+    protected int getHeaderValue(HeaderSetting headerSetting, List<Integer> packetList) {
+        return Integer.parseInt(getPacketValueString(headerSetting, packetList), 16);
+    }
+
     protected String getPacketValueString(HeaderSetting headerSetting, List<Integer> packetList) {
         int start = headerSetting.getStartingBit() / 4;
         int end = start + headerSetting.getBits() / 4;

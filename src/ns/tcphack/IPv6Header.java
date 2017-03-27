@@ -41,10 +41,6 @@ public class IPv6Header extends Header {
         destinationAddress = getPacketValueString(DESTINATION_ADDRESS, packetList);
     }
 
-    private int getHeaderValue(HeaderSetting headerSetting, List<Integer> packetList) {
-        return Integer.parseInt(getPacketValueString(headerSetting, packetList), 16);
-    }
-
     private String getIPv6HeaderString() {
         return getSettingString(VERSION, version) + getSettingString(TRAFFIC_CLASS, trafficClass) + getSettingString(FLOW_LABEL, flowLabel)
                 + getSettingString(PAYLOAD_LENGTH, payloadLength) + getSettingString(NEXT_HEADER, nextHeader) + getSettingString(HOP_LIMIT, hopLimit) + sourceAddress

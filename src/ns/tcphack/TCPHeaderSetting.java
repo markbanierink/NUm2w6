@@ -11,8 +11,8 @@ public enum TCPHeaderSetting implements HeaderSetting {
     SEQUENCE_NUMBER(32),
     ACKNOWLEDGMENT_NUMBER(32),
     DATA_OFFSET(4),
-    RESERVED(3),
-    CONTROL_FLAGS(9),
+    RESERVED(4),
+    CONTROL_FLAGS(8),
     WINDOW_SIZE(16),
     CHECKSUM(16),
     URGENT_POINTER(16);
@@ -36,13 +36,5 @@ public enum TCPHeaderSetting implements HeaderSetting {
 
     public int getBits() {
         return bits;
-    }
-
-    public int getSize() {
-        int size = 0;
-        for (TCPHeaderSetting headerSetting : TCPHeaderSetting.values()) {
-            size += headerSetting.getSize();
-        }
-        return size;
     }
 }

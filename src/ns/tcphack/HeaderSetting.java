@@ -9,6 +9,4 @@ public interface HeaderSetting {
     int getStartingBit();
 
     int getBits();
-
-    int getSize();
 }

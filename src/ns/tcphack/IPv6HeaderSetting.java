@@ -35,13 +35,4 @@ public enum IPv6HeaderSetting implements HeaderSetting {
     public int getBits() {
         return bits;
     }
-
-    public int getSize() {
-        int size = 0;
-        for (IPv6HeaderSetting headerSetting : IPv6HeaderSetting.values()) {
-            size += headerSetting.getSize();
-        }
-        return size;
-    }
-
 }

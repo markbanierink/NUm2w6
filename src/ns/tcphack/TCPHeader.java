@@ -10,9 +10,9 @@ import static ns.tcphack.TCPHeaderSetting.*;
  */
 public class TCPHeader extends Header {
 
-    private static final int FIN = Integer.parseInt("000000001", 2);
-    private static final int SYN = Integer.parseInt("000000010", 2);
-    private static final int ACK = Integer.parseInt("000010000", 2);
+    private static final int FIN = Integer.parseInt("00000001", 2);
+    private static final int SYN = Integer.parseInt("00000010", 2);
+    private static final int ACK = Integer.parseInt("00010000", 2);
 
     private int sourcePort;
     private int destinationPort;
@@ -51,39 +51,11 @@ public class TCPHeader extends Header {
         urgentPointer = getHeaderValue(URGENT_POINTER, packetList);
     }
 
-    private int getHeaderValue(HeaderSetting headerSetting, List<Integer> packetList) {
-        int value;
-        if (headerSetting == RESERVED) {
-            int start = headerSetting.getStartingBit() / 4;
-            int end = start + 1;
-            String valueString = listToString(packetList).substring(start, end);
-            int rawValue = Integer.parseInt(valueString, 16);
-            value = rawValue >> 1;                                                                  // Shift one bit to get the first 3 bits
-        }
-        else if (headerSetting == CONTROL_FLAGS) {
-            int start = RESERVED.getStartingBit() / 4;
-            int end = start + (RESERVED.getBits() + headerSetting.getBits()) / 4;
-            String valueString = listToString(packetList).substring(start, end);
-            int rawValue = Integer.parseInt(valueString, 16);
-            value = rawValue & (int)(Math.pow(2, headerSetting.getBits()) - 1);                     // Bitwise AND to get the last 9 bits
-        }
-        else {
-            value = Integer.parseInt(getPacketValueString(headerSetting, packetList), 16);     // Just parse the string to an integer
-        }
-        return value;
-    }
-
     public String getTCPHeaderString() {
         return getSettingString(SOURCE_PORT, sourcePort) + getSettingString(DESTINATION_PORT, destinationPort) + getSettingString(SEQUENCE_NUMBER, sequenceNumber)
-                + getSettingString(ACKNOWLEDGMENT_NUMBER, ackNumber) + getSettingString(DATA_OFFSET, dataOffset) + reservedControlBits()
-                + getSettingString(WINDOW_SIZE, windowSize) + getSettingString(CHECKSUM, checksum) + getSettingString(URGENT_POINTER, urgentPointer);
-    }
-
-    private String reservedControlBits() {
-        int reservedMoved = reserved << CONTROL_FLAGS.getBits();
-        int reservedControlBits = reservedMoved + controlFlags;
-        int paddingSize = (RESERVED.getBits() + CONTROL_FLAGS.getBits()) / 4 - Integer.toHexString(reservedControlBits).length();
-        return String.format("%0" + paddingSize + "d", 0) + Integer.toHexString(reservedControlBits);
+                + getSettingString(ACKNOWLEDGMENT_NUMBER, ackNumber) + getSettingString(DATA_OFFSET, dataOffset) + getSettingString(RESERVED, reserved)
+                + getSettingString(CONTROL_FLAGS, controlFlags) + getSettingString(WINDOW_SIZE, windowSize) + getSettingString(CHECKSUM, checksum)
+                + getSettingString(URGENT_POINTER, urgentPointer);
     }
 
     public List<Integer> getTCPHeaderList() {

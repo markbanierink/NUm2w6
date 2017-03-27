@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class Packet {
 
-    private static final int IPv6HEADER_SIZE = 20;
-
     private IPv6Header ipV6Header;
     private TCPHeader tcpHeader;
 
@@ -21,8 +19,16 @@ public class Packet {
 
     public Packet(int[] packetArray) {
         List<Integer> packetList = arrayToList(packetArray);
-        ipV6Header = new IPv6Header(packetList.subList(0, IPv6HEADER_SIZE));
-        tcpHeader = new TCPHeader(packetList.subList(IPv6HEADER_SIZE + 1, packetList.size()));
+        ipV6Header = new IPv6Header(packetList.subList(0, getIPv6HeaderSize()));
+        tcpHeader = new TCPHeader(packetList.subList(getIPv6HeaderSize() + 1, packetList.size()));
+    }
+
+    private int getIPv6HeaderSize() {
+        int size = 0;
+        for (HeaderSetting header : IPv6HeaderSetting.values()) {
+            size += header.getBits();
+        }
+        return size;
     }
 
     public IPv6Header getIPv6Header() {
