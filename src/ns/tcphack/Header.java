@@ -30,7 +30,7 @@ public abstract class Header {
         return listToString(packetList).substring(start, end);
     }
 
-    protected String listToString(List<Integer> packetList) {
+    private String listToString(List<Integer> packetList) {
         StringBuilder string = new StringBuilder();
         for (int byteValue : packetList) {
             string.append(Integer.toHexString(byteValue));
